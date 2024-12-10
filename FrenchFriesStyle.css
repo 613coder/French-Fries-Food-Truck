@@ -111,15 +111,7 @@ nav a:hover {
         flex-direction: column;
     }
 
-    .menu-item img {
-        width: 150px;
-        height: 150px;
-    }
-
-    .menu-item {
-        margin: 10px;
-    }
-}
+                            /*submit page*/
 img {
     width: 45%;             /* Adjust width to fit two images */
     height: auto;           /* Maintain aspect ratio */
@@ -129,23 +121,19 @@ img {
     margin-right: auto;
 
     }
-    .about p {
-    text-align: center;
-    }
-    .order form {
-    border: 2px solid black;
-    font-size:large;
-    text-align: center;
-    width: 40%;
-    margin: 0 auto;
-    position: relative;
-    top: 50px;
-    }
-
-
-.back_to_top_button {
-    grid-column: span 2;
+.submit button:hover {
+    cursor: pointer;
 }
+
+
+
+
+                /*about page*/
+
+.about p {
+text-align: center;
+}
+
 
                                                     
                                                     
