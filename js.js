@@ -21,123 +21,148 @@ app.get("/aboutus", (req, res) => {
     res.sendFile(path.join(__dirname, 'AboutUs.html'));
 });
 
-let orders = [];
-let total = 0;
-
-function addToOrder(name, price) {
-    orders.push({name: name, price: price});
-
-    updateOrderSummary();
-}
-
-function updateOrderSummary() {
-    const orderList = document.getElementById('order-list');
-    const totalPrice = document.getElementById('total-price');
-
-    orderList.innerHTML = '';  //clear list
-    total = 0;  //resetting total price
-
-    orders.forEach((item, index) => {        //fill in order list
-
-        const listItem = document.createElement('li');
-
-        listItem.innerHTML = `<li>${item.name} - $${item.price}</li>  
-        <button id="remove-order" onclick="removeItem(${index})">Remove</button>`;       //creating list item
-
-        orderList.appendChild(listItem);    //adding each order list item
-
-
-        total += item.price;  //updating price
-    });
-
-    totalPrice.innerText = `Total: $${total}`;
-}
-
-function removeItem(index) {
-    orders.splice(index, 1);
-
-    updateOrderSummary();
-}
 
 
 
+document.addEventListener('DOMContentLoaded', () => {
 
-//ripple effect on "place order" buttons
+    // **Loading Animation**
+    const menuContainer = document.querySelector('.menu');
+    const boxes = document.querySelectorAll('.menu-item');
 
-const buttons = document.querySelectorAll('.menu-item button');
-buttons.forEach(button => {
-    button.addEventListener('click', function (e) {
-        const x = e.clientX;
-        const y = e.clientY;
+    function checkBoxes() {
+        const containerRect = menuContainer.getBoundingClientRect();
+        const triggerBottom = containerRect.top + (containerRect.height / 5) * 4;
 
-        const buttonTop = e.target.offsetTop;
-        const buttonLeft = e.target.offsetLeft;
+        boxes.forEach((box) => {
+            const boxTop = box.getBoundingClientRect().top;
 
-        const xInside = x - buttonLeft;
-        const yInside = y - buttonTop;
+            if (boxTop < triggerBottom) {
+                box.classList.add('show');
+            } else {
+                box.classList.remove('show');
+            }
+        });
+    }
 
-        const circle = document.createElement('span');
-        circle.classList.add('circle');
-        circle.style.top = yInside + 'px';
-        circle.style.left = xInside + 'px';
+    if (menuContainer) {
+        menuContainer.addEventListener('scroll', checkBoxes);
+        checkBoxes(); 
+    }
 
-        this.appendChild(circle);
 
-        circle.addEventListener('animationend', () => {
-            circle.remove();
+    // **Order Mechanics**
+    let orders = [];
+    let total = 0;
+
+    function addToOrder(name, price) {
+        orders.push({ name, price });
+        updateOrderSummary();
+    }
+
+    function updateOrderSummary() {
+        const orderList = document.getElementById('order-list');
+        const totalPrice = document.getElementById('total-price');
+
+        orderList.innerHTML = ''; // Clear list
+        total = 0; // Reset total price
+
+        orders.forEach((item, index) => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                ${item.name} - $${item.price}
+                <button id="remove-order" onclick="removeItem(${index})">Remove</button>
+            `;
+            orderList.appendChild(listItem);
+            total += item.price;
+        });
+
+        totalPrice.innerText = `Total: $${total}`;
+    }
+
+    function removeItem(index) {
+        orders.splice(index, 1);
+        updateOrderSummary();
+    }
+
+    window.addToOrder = addToOrder;
+    window.removeItem = removeItem;
+
+
+
+
+    // **Auto-Text Effect**
+    const textEl = document.getElementById('text');
+    const text = 'Thank You For Your Order!';
+    let idx = 1;
+    const speed = 60;
+
+    function writeText() {
+        textEl.innerText = text.slice(0, idx);
+        idx++;
+        setTimeout(writeText, speed);
+    }
+
+    writeText();
+
+
+
+    // **Ripple Effect on Buttons**
+    const buttons = document.querySelectorAll('.menu-item button');
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', function (e) {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            const buttonTop = e.target.offsetTop;
+            const buttonLeft = e.target.offsetLeft;
+
+            const xInside = x - buttonLeft;
+            const yInside = y - buttonTop;
+
+            const circle = document.createElement('span');
+            circle.classList.add('circle');
+            circle.style.top = `${yInside}px`;
+            circle.style.left = `${xInside}px`;
+
+            this.appendChild(circle);
+
+            circle.addEventListener('animationend', () => {
+                circle.remove();
+            });
         });
     });
+
+
+
+    // **Dad Jokes**
+    const jokeEl = document.getElementById('insert-joke');
+    const jokeBtn = document.getElementById('joke');
+
+    async function generateJoke() {
+        const config = {
+            headers: {
+                Accept: 'application/json',
+            },
+        };
+
+        const res = await fetch('https://icanhazdadjoke.com', config);
+        const data = await res.json();
+
+        jokeEl.innerHTML = data.joke;
+    }
+
+    jokeBtn.addEventListener('click', generateJoke);
+
 });
 
 
-//loading animation
-const menuContainer = document.querySelector('.menu');
-const boxes = document.querySelectorAll('.menu-item')
-
-menuContainer.addEventListener('scroll', checkBoxes)
-
-checkBoxes()
-
-function checkBoxes() {
-    const containerRect = menuContainer.getBoundingClientRect();
-
-    const triggerBottom = containerRect.top + (containerRect.height / 5 * 4);
-
-    boxes.forEach(box => {
-        const boxTop = box.getBoundingClientRect().top
-
-        if(boxTop < triggerBottom) {
-            box.classList.add('show')
-        } else {
-            box.classList.remove('show')
-        }
-    })
-}
 
 
 
 
-//Dad Jokes
-const jokeEl = document.getElementById('insert-joke')
-const jokeBtn = document.getElementById('joke')
 
-jokeBtn.addEventListener('click', generateJoke)
 
-generateJoke()
-
-// USING ASYNC/AWAIT
-async function generateJoke() {
-  const config = {
-    headers: {
-      Accept: 'application/json',
-    },
-  }
-
-  const res = await fetch('https://icanhazdadjoke.com', config)
-
-  const data = await res.json()
-
-  jokeEl.innerHTML = data.joke
-}
 
 
