@@ -1,29 +1,3 @@
-const express=require("express");
-const nodemailer=require("nodemailer");
-const cors=require("cors");
-const bodyparser=require("body-parser");
-const path = require("path");
-
-const app = express();
-const PORT = 3000;
-app.use(express.json());
-app.use(cors());
-app.use(express.static(path.join(__dirname, 'orderStyle.css')));
-app.use(express.static(path.join(__dirname, 'FrenchFriesStyle.css')));
-
-app.get("/home", (req, res) => {
-    res.sendFile(path.join(__dirname, 'Home.html'));
-});
-app.get("/order", (req, res) => {
-    res.sendFile(path.join(__dirname, 'Order.html'));
-});
-app.get("/aboutus", (req, res) => {
-    res.sendFile(path.join(__dirname, 'AboutUs.html'));
-});
-
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
 
     // **Loading Animation**
@@ -154,6 +128,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     jokeBtn.addEventListener('click', generateJoke);
+const loveMe = document.querySelector('.loveMe')
+const times = document.querySelector('#times')
+
+let clickTime = 0
+let timesClicked = 0
+
+loveMe.addEventListener('click', (e) => {
+    if(clickTime === 0) {
+        clickTime = new Date().getTime()
+    } else {
+        if((new Date().getTime() - clickTime) < 800) {
+            createHeart(e)
+            clickTime = 0
+        } else {
+            clickTime = new Date().getTime()
+        }
+    }
+})
+
+const createHeart = (e) => {
+    const heart = document.createElement('i')
+    heart.classList.add('fas')
+    heart.classList.add('fa-heart')
+
+    const x = e.clientX
+    const y = e.clientY
+
+    const leftOffset = e.target.offsetLeft
+    const topOffset = e.target.offsetTop
+
+    const xInside = x - leftOffset
+    const yInside = y - topOffset
+
+    heart.style.top = `${yInside}px`
+    heart.style.left = `${xInside}px`
+
+    loveMe.appendChild(heart)
+
+    times.innerHTML = ++timesClicked
+
+    setTimeout(() => heart.remove(), 1000)
+}
 
 });
 
