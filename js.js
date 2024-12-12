@@ -81,35 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // **Ripple Effect on Buttons**
-    console.log("test");
-    const bttns = document.querySelectorAll('.menu-item button');
-    console.log("test");
-    bttns.forEach((bttn) => {
-        bttn.addEventListener('click', function (e) {
-            const x = e.clientX;
-            const y = e.clientY;
-
-            const buttonTop = e.target.offsetTop;
-            const buttonLeft = e.target.offsetLeft;
-
-            const xInside = x - buttonLeft;
-            const yInside = y - buttonTop;
-
-            const circle = document.createElement('span');
-            circle.classList.add('circle');
-            circle.style.top = `${yInside}px`;
-            circle.style.left = `${xInside}px`;
-
-            this.appendChild(circle);
-
-            circle.addEventListener('animationend', () => {
-                circle.remove();
-            });
-        });
-    });
-
-
 
     // **Dad Jokes**
     const jokeEl = document.getElementById('insert-joke');
@@ -127,8 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         jokeEl.innerHTML = data.joke;
     }
-
+    console.log("joke");
     jokeBtn.addEventListener('click', generateJoke);
+
 const loveMe = document.querySelector('.loveMe')
 const times = document.querySelector('#times')
 
