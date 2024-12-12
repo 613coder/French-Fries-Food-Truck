@@ -1,4 +1,4 @@
-
+document.addEventListener('DOMContentLoaded', () => {
 const bttns = document.querySelectorAll('.ripple');
 
 bttns.forEach((bttn) => {
@@ -23,4 +23,5 @@ bttns.forEach((bttn) => {
         });
         console.log("DOing something");
     });
+});
 });
