@@ -82,10 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // **Ripple Effect on Buttons**
-    const buttons = document.querySelectorAll('.menu-item button');
-
-    buttons.forEach((button) => {
-        button.addEventListener('click', function (e) {
+    console.log("test");
+    const bttns = document.querySelectorAll('.menu-item button');
+    console.log("test");
+    bttns.forEach((bttn) => {
+        bttn.addEventListener('click', function (e) {
             const x = e.clientX;
             const y = e.clientY;
 
